@@ -32,7 +32,7 @@ type SimplePipline struct {
 }
 
 func (p *SimplePipline) Name() string {
-	return "gus num"
+	return "simple pipline"
 }
 
 func NewPipline(ctx context.Context, cfg PiplineConfig) base.Pipline {

@@ -58,6 +58,7 @@ func main() {
 	}
 	var pip base.Pipline
 	pip = pipline.NewPipline(ctx, pipline.PiplineConfig{
+		Name:    "guess number is odd or even",
 		Agents:  agents,
 		Roadmap: roadmap,
 	})
