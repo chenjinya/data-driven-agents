@@ -1,5 +1,7 @@
 package base
 
+import "context"
+
 type JSON map[string]interface{}
 
 func (j JSON) Validate() error {
@@ -20,7 +22,7 @@ type Agent interface {
 	SetInput(JSON) error
 	SetInputValidator(func() error)
 	Output() JSON
-	Call() error
+	Call(ctx context.Context) error
 }
 
 type AgentRoad struct {
@@ -31,4 +33,5 @@ type AgentRoad struct {
 type Pipline interface {
 	Name() string
 	Execute() error
+	Run() error
 }

@@ -72,13 +72,13 @@ func (a *SimpleAgent) SetInputValidator(v func() error) {
 func (a *SimpleAgent) Output() base.JSON {
 	return a.output
 }
-func (a *SimpleAgent) Call() (err error) {
+func (a *SimpleAgent) Call(ctx context.Context) (err error) {
 	cfg := openai.DefaultConfig(os.Getenv("OPENAI_API_KEY"))
 	cfg.BaseURL = os.Getenv("OPENAI_BASE_URL")
 	client := openai.NewClientWithConfig(cfg)
 	mustmp, _ := mustache.ParseString(a.Prompt())
 	prompt := mustmp.Render(a.Input())
-	fmt.Println("> Predict prompt: ", prompt)
+	fmt.Println("🤖 Predict prompt: ", prompt)
 	result, err := client.CreateChatCompletion(
 		context.Background(),
 		openai.ChatCompletionRequest{
@@ -97,7 +97,7 @@ func (a *SimpleAgent) Call() (err error) {
 	)
 
 	if err != nil {
-		fmt.Printf("ChatCompletion error: %v\n", err)
+		fmt.Printf("🤖 ChatCompletion error: %v\n", err)
 		return err
 	}
 
