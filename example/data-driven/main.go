@@ -43,17 +43,25 @@ func main() {
 		"number is odd ?": agentB,
 		"judgement":       agentC,
 	}
-	roadmap := pipline.RoadPath{
-		ID: "entry",
-		Next: []pipline.RoadPath{
-			{
-				ID: "number is odd ?",
-				Next: []pipline.RoadPath{
-					{
-						ID: "judgement",
-					},
+	roadmap := map[string]pipline.RoadPath{
+		"entry": {
+			ID: "entry",
+			Next: []pipline.RoadPath{
+				{
+					ID: "number is odd ?",
 				},
 			},
+		},
+		"number is odd ?": {
+			ID: "number is odd ?",
+			Next: []pipline.RoadPath{
+				{
+					ID: "judgement",
+				},
+			},
+		},
+		"judgement": {
+			ID: "judgement",
 		},
 	}
 	var pip base.Pipline

@@ -9,7 +9,7 @@ import (
 type PiplineConfig struct {
 	Name    string
 	Agents  map[string]base.Agent
-	Roadmap RoadPath
+	Roadmap map[string]RoadPath
 }
 
 type RoadPath struct {
@@ -21,7 +21,7 @@ type RoadPath struct {
 type SimplePipline struct {
 	ctx           context.Context
 	name          string
-	roadmap       RoadPath
+	roadmap       map[string]RoadPath
 	agents        map[string]base.Agent
 	nextroads     []RoadPath
 	prevagent     base.Agent
@@ -85,7 +85,7 @@ type ExecutedResult struct {
 
 func (p *SimplePipline) Execute() error {
 	if p.nextroads == nil {
-		p.nextroads = []RoadPath{p.roadmap}
+		p.nextroads = []RoadPath{p.roadmap["entry"]}
 	}
 	for _, item := range p.nextroads {
 		if err := p.event(p.BeforeExecute, item); err != nil {
@@ -107,7 +107,10 @@ func (p *SimplePipline) Execute() error {
 		}
 		if item.Next != nil {
 			p.prevagent = _agent
-			p.nextroads = item.Next
+			p.nextroads = nil
+			for _, n := range item.Next {
+				p.nextroads = append(p.nextroads, p.roadmap[n.ID])
+			}
 			err = p.Execute()
 			if err != nil {
 				return err
